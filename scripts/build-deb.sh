@@ -50,6 +50,7 @@ ninja -C .build -k 0 -j "$(nproc)"
 # -- Create a temporary DESTDIR.
 
 DESTDIR="$(pwd)/pkg"
+
 rm -rf "$DESTDIR"
 
 
@@ -81,9 +82,8 @@ EOF
 # -- Build the Debian package.
 
 cd "$(dirname "$DESTDIR")"
-dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
 
-pwd
+dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
 
 
 # -- Move .deb to ./build/ for CI consistency.
