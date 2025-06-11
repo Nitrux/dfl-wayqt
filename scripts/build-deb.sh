@@ -87,6 +87,6 @@ dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHI
 # -- Move .deb to ./build/ for CI consistency.
 
 mkdir -p ./build
-mv "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb" ./build/
+mv ./build/*.deb /__w/wayqt/wayqt/build/
 
 echo "Debian package created: $(pwd)/build/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
