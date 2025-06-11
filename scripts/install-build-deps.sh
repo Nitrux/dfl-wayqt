@@ -17,4 +17,5 @@ $APT_COMMAND install -qy --no-install-recommends \
     qt6-wayland-dev \
     qt6-wayland-private-dev \
     qt6-l10n-tools \
-    qt6-declarative-dev-tools
+    qt6-declarative-dev-tools \
+    qt6-base-private-dev
