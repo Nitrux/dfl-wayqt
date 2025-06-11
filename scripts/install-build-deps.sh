@@ -10,7 +10,6 @@ $APT_COMMAND update -q
 $APT_COMMAND install -qy --no-install-recommends \
     meson \
     ninja-build \
-    checkinstall \
     qt6-base-dev \
     pkg-config \
     cmake \

@@ -28,51 +28,59 @@
 set -e
 
 
-# --  Download Source.
+# -- Variables.
+
+PKGNAME="wayqt-qt6"
+MAINTAINER="uri_herrera@nxos.org"
+ARCHITECTURE="amd64"
+DESCRIPTION="A Qt-based wrapper for various wayland protocols. A Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project."
+
+
+# -- Download Source.
 
 git clone --depth 1 --branch "$WAYQT_BRANCH" https://gitlab.com/desktop-frameworks/wayqt.git
 cd wayqt
 
 
-# --  Configure Build.
+# -- Configure Build.
 
 meson setup .build --prefix=/usr --buildtype=release
 
 
-# --  Compile Source.
+# -- Compile Source.
 
 ninja -C .build -k 0 -j "$(nproc)"
 
 
-# --  Build Debian Package with checkinstall.
+# -- Create a temporary DESTDIR.
 
-cd .build
+DESTDIR="$(pwd)/pkg"
+rm -rf "$DESTDIR"
 
->> description-pak printf "%s\n" \
-	'A Qt-based wrapper for various wayland protocols.' \
-	'' \
-	'The Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project.' \
-	''
 
-rm -rf /usr/include/DFL/DF6/wayqt
+# -- Install to DESTDIR.
 
-checkinstall -D -y \
-	--install=no \
-	--fstrans=yes \
-	--pkgname=wayqt-qt6 \
-	--pkgversion="$PACKAGE_VERSION" \
-	--pkgarch=amd64 \
-	--pkgrelease="1" \
-	--pkglicense=LGPL-3 \
-	--pkggroup=utils \
-	--pkgsource=wayqt-qt6 \
-	--pakdir=. \
-	--maintainer=uri_herrera@nxos.org \
-	--provides=wayqt-qt6 \
-	--requires="libqt6core6" \
-	--nodoc \
-	--strip=no \
-	--stripso=yes \
-	--reset-uids=yes \
-	--deldesc=yes \
-	ninja install
+ninja -C .build install DESTDIR="$DESTDIR"
+
+
+# -- Create DEBIAN control file.
+
+mkdir -p "$DESTDIR/DEBIAN"
+
+cat > "$DESTDIR/DEBIAN/control" <<EOF
+Package: $PKGNAME
+Version: $PACKAGE_VERSION
+Section: utils
+Priority: optional
+Architecture: $ARCHITECTURE
+Maintainer: $MAINTAINER
+Description: $DESCRIPTION
+EOF
+
+
+# -- Build the Debian package.
+
+cd "$(dirname "$DESTDIR")"
+dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
+
+echo "Debian package created: $(pwd)/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
