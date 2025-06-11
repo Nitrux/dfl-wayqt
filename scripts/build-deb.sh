@@ -63,7 +63,7 @@ DESTDIR="$DESTDIR" ninja -C .build install
 
 mkdir -p "$DESTDIR/DEBIAN"
 
-PKGNAME="wayqt-qt6"
+PKGNAME="dfl-wayqt-qt6"
 MAINTAINER="uri_herrera@nxos.org"
 ARCHITECTURE="$(dpkg --print-architecture)"
 DESCRIPTION="A Qt-based wrapper for various wayland protocols. A Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project."
