@@ -54,6 +54,8 @@ cd .build
 	'The Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project.' \
 	''
 
+rm -rf /usr/include/DFL/DF6/wayqt
+
 checkinstall -D -y \
 	--install=no \
 	--fstrans=yes \
