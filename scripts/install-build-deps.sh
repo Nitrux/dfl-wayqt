@@ -15,4 +15,4 @@ $APT_COMMAND install -qy --no-install-recommends \
     pkg-config \
     cmake \
     qt6-wayland-dev \
-    qt6-tools-dev-tools
+    qt6-wayland
