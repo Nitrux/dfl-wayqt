@@ -31,7 +31,7 @@ set -e
 # --  Download Source.
 
 git clone --depth 1 --branch "$WAYQT_BRANCH" https://gitlab.com/desktop-frameworks/wayqt.git
-cd WayQt
+cd wayqt
 
 
 # --  Configure Build.
