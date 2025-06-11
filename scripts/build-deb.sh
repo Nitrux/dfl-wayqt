@@ -83,4 +83,10 @@ EOF
 cd "$(dirname "$DESTDIR")"
 dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
 
-echo "Debian package created: $(pwd)/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
+
+# -- Move .deb to ./build/ for CI consistency.
+
+mkdir -p ./build
+mv "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb" ./build/
+
+echo "Debian package created: $(pwd)/build/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
