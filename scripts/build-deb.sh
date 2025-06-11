@@ -60,7 +60,7 @@ rm -rf "$DESTDIR"
 
 # -- Install to DESTDIR.
 
-ninja -C .build install DESTDIR="$DESTDIR"
+DESTDIR="$DESTDIR" ninja -C .build install
 
 
 # -- Create DEBIAN control file.
