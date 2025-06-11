@@ -84,9 +84,9 @@ cd "$(dirname "$DESTDIR")"
 dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
 
 
-# -- Move .deb to ./build/ for CI consistency.
+# -- Move final .deb to workspace-level build/ directory for CI.
 
-mkdir -p ./build
-mv ./build/*.deb /__w/wayqt/wayqt/build/
+mkdir -p ../../build
+mv ./build/*.deb ../../build/
 
 echo "Debian package created: $(pwd)/build/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
