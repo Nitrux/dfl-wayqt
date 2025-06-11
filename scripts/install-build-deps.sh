@@ -15,4 +15,6 @@ $APT_COMMAND install -qy --no-install-recommends \
     pkg-config \
     cmake \
     qt6-wayland-dev \
-    qt6-wayland
+    qt6-wayland-private-dev \
+    qt6-l10n-tools \
+    qt6-declarative-dev-tools
