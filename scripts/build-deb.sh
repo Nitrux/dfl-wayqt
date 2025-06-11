@@ -28,18 +28,13 @@
 set -e
 
 
-# -- Variables.
-
-PKGNAME="wayqt-qt6"
-MAINTAINER="uri_herrera@nxos.org"
-ARCHITECTURE="amd64"
-DESCRIPTION="A Qt-based wrapper for various wayland protocols. A Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project."
-
-
 # -- Download Source.
 
-git clone --depth 1 --branch "$WAYQT_BRANCH" https://gitlab.com/desktop-frameworks/wayqt.git
-cd wayqt
+SRC_DIR="$(mktemp -d)"
+
+git clone --depth 1 --branch "$WAYQT_BRANCH" https://gitlab.com/desktop-frameworks/wayqt.git "$SRC_DIR/wayqt-src"
+
+cd "$SRC_DIR/wayqt-src"
 
 
 # -- Configure Build.
@@ -67,6 +62,11 @@ DESTDIR="$DESTDIR" ninja -C .build install
 
 mkdir -p "$DESTDIR/DEBIAN"
 
+PKGNAME="wayqt-qt6"
+MAINTAINER="uri_herrera@nxos.org"
+ARCHITECTURE="$(dpkg --print-architecture)"
+DESCRIPTION="A Qt-based wrapper for various wayland protocols. A Qt-based library to handle Wayland and Wlroots protocols to be used with any Qt project."
+
 cat > "$DESTDIR/DEBIAN/control" <<EOF
 Package: $PKGNAME
 Version: $PACKAGE_VERSION
@@ -83,10 +83,13 @@ EOF
 cd "$(dirname "$DESTDIR")"
 dpkg-deb --build "$(basename "$DESTDIR")" "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
 
+pwd
+
 
 # -- Move .deb to ./build/ for CI consistency.
 
-mkdir -p ./build
-mv "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb" ../../build/
+mkdir -p "$GITHUB_WORKSPACE/build"
+
+mv "${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb" "$GITHUB_WORKSPACE/build/"
 
 echo "Debian package created: $(pwd)/build/${PKGNAME}_${PACKAGE_VERSION}_${ARCHITECTURE}.deb"
